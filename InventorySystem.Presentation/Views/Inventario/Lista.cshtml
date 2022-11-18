@@ -1,0 +1,71 @@
+﻿@model IList<IGrouping<InventorySystem.Data.Entities.Sucursal,InventorySystem.Data.Entities.Inventario>>
+
+@{
+    ViewData["Title"] = "Lista Inventario";
+}
+
+<h1>Lista</h1>
+
+<p>
+    <a asp-action="Crear">Agregar Nuevo Item</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Nombre Sucursal
+            </th>
+            <th>
+                SucursalId
+            </th>
+            <th>
+                ProductoId
+            </th>
+            <th>
+                Nombre Producto
+            </th>
+            <th>
+                Cantidad Disponible
+            </th>
+            <th>
+                Precio
+            </th>
+            
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+       
+            @foreach(var inv in item)
+            {
+             <tr>
+                <td>
+                    @item.Key.Nombre
+                </td>
+                <td>
+                    @item.Key.Id
+                </td>
+                 <td>
+                    @inv.ProductoId
+                </td>
+                  <td>
+                    @inv.Producto.Nombre
+                 </td>
+                 <td>
+                     @inv.Producto.CantidadDisponible
+                 </td>
+                 <td>
+                    @inv.Producto.PrecioUnitario
+                </td>
+            
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { inventarioId=inv.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { inventarioId=inv.Id})
+                </td> 
+              </tr>
+            }
+}
+    </tbody>
+</table>

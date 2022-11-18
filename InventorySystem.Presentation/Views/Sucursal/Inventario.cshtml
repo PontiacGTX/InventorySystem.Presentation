@@ -1,0 +1,71 @@
+﻿@model IList<IGrouping<InventorySystem.Data.Entities.Sucursal,InventorySystem.Data.Entities.Inventario>>
+
+@{
+    ViewData["Title"] = "Lista Inventario Sucursal";
+}
+
+<h1>Lista Inventario</h1>
+
+<p>
+    <a asp-action="Crear" asp-controller="Inventario" asp-route-sucursalId="@ViewData["SucursalId"].ToString()">Agregar Nuevo Item</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Nombre Sucursal
+            </th>
+            <th>
+                SucursalId
+            </th>
+            <th>
+                ProductoId
+            </th>
+            <th>
+                Nombre Producto
+            </th>
+            <th>
+                Cantidad Disponible
+            </th>
+            <th>
+                Precio
+            </th>
+            
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+       
+            @foreach(var inv in item)
+            {
+             <tr>
+                <td>
+                    @item.Key.Nombre
+                </td>
+                <td>
+                    @item.Key.Id
+                </td>
+                 <td>
+                    @inv.ProductoId
+                </td>
+                  <td>
+                    @inv.Producto.Nombre
+                 </td>
+                 <td>
+                     @inv.Producto.CantidadDisponible
+                 </td>
+                 <td>
+                    @inv.Producto.PrecioUnitario
+                </td>
+            
+                <td>
+                    @Html.ActionLink("Edit", "Edit","Inventario", new { inventarioId=inv.Id }) |
+                    @Html.ActionLink("Delete", "Delete","Inventario", new { inventarioId=inv.Id})
+                </td> 
+              </tr>
+            }
+}
+    </tbody>
+</table>

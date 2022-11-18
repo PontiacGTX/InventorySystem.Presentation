@@ -1,0 +1,61 @@
+﻿@model IEnumerable<InventorySystem.Data.Entities.Producto>
+
+@{
+    ViewData["Title"] = "Lista Productos";
+    TempData["ExpectedRedirectAction"] = null;
+    TempData["ExpectedRedirectController"] = null;
+}
+
+<h1>Lista</h1>
+
+<p>
+    <a style="btn btn-primary" asp-action="Crear">Crear</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoDeBarra)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CantidadDisponible)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioUnitario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoDeBarra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CantidadDisponible)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioUnitario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new {  id=item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

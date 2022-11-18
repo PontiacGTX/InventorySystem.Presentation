@@ -1,0 +1,121 @@
+﻿@model InventorySystem.Data.Models.CrearInventarioViewModel
+@{
+    ViewData["Title"] = "Crear inventario";
+    string sid = null;
+  
+    if (TempData["SucursalId"] != null)
+    {
+        sid = TempData["SucursalId"].ToString();
+    }
+}
+
+<h1>Crear</h1>
+
+<h4>Producto</h4>
+<hr />
+   @if( ViewData["Validation"]!=null)
+    {
+        <ul>
+        @foreach(var str in ViewData["Validation"] as List<string>)
+        {
+          @Html.Raw(str);
+        }
+        </ul>
+    }
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Crear" asp-controller="Inventario" asp-route-sucursalId="@sid">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input id="Id" name="Id"  class="form-control" style="display:none;" disable/>
+            </div>
+               <div class="form-group">
+                @if (Model.Productos.Any())
+                {
+                    <label  class="control-label"  style="display:none;">Productos</label>
+                    <select id="ProductoId" name="ProductoId">
+                        <option value="" >Seleccione una opcion</option>
+                        @foreach (var item in Model.Productos)
+                        {
+                           
+                            if(item.Enable)
+                            {
+                                 <option value="@item.Value.Id" >@($"{item.Value.Nombre} Cod: {item.Value.CodigoDeBarra} {item.Value.Inventario} Disp: {item.Value.CantidadDisponible}") </option>
+                            }
+                            else
+                            {
+                                  <option value="@item.Value.Id" disabled >@($"{item.Value.Nombre} Cod: {item.Value.CodigoDeBarra} {item.Value.Inventario} Disp: {item.Value.CantidadDisponible}") </option>
+                            }
+                        }
+
+                    </select>
+                    @* <span asp-validation-for="ProductoId" class="text-danger" ></span>*@
+                }
+                else
+                {
+                    <div class="container">
+                        <p>No existen Sucursales </p>
+                        <a style="btn btn-success" asp-action="Crear" asp-controller="Producto">Crear Producto</a>
+                        @{
+                            TempData["ExpectedRedirectAction"] = "Crear";
+                            TempData["ExpectedRedirectController"] = "Inventario";
+                        }
+                    </div>
+                }
+            </div>
+               <div class="form-group">
+                @if (Model.Sucursales.Any())
+                {
+                    <label  class="control-label"  style="display:none;">Sucursales</label>
+                    <select id="SucursalId" name="SucursalId">
+                        <option value="" >Seleccione una opcion</option>
+                        @if (TempData["SucursalId"] != null)
+                        {
+                            @foreach (var item in Model.Sucursales)
+                            {
+                                 @if (TempData["SucursalId"].ToString() == item.Id.ToString())
+                                {
+                                    <option value="@item.Id" selected >@item.Nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id"  >@item.Nombre </option>
+                                }
+                            }
+                        }
+                        @foreach (var item in Model.Sucursales)
+                        {
+                           
+                           <option value="@item.Id"  >@item.Nombre </option>
+                            
+                        }
+
+                    </select>
+                    @* <span asp-validation-for="ProductoId" class="text-danger" ></span>*@
+                }
+                else
+                {
+                    <div class="container">
+                        <p>No existen Sucursales </p>
+                        <a style="btn btn-success" asp-action="Crear" asp-controller="Sucursal">Crear Sucursal</a>
+                        @{
+                            TempData["ExpectedRedirectAction"] = "Crear";
+                            TempData["ExpectedRedirectController"] = "Inventario";
+                        }
+                    </div>
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" @(!Model.Productos.Any() || !Model.Sucursales.Any() ? "disabled":"") />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Lista">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
